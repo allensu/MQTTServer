@@ -61,16 +61,15 @@ public class Main {
 	public static void Send(String broker_ip_addr, int broker_port) throws IOException, InterruptedException{
 		System.out.println(" Send Loop ...");
 		
-		mongodb db= new mongodb();
-		try {db.start(url, messageDB);} catch (Exception e) {  e.printStackTrace();	}
-		
 		// Get 閮
+		mongodb db= new mongodb();
  		List<MessageData> messageDateList = db.findAll(); 
 
 		// �潮�閮
 		for(MessageData currData : messageDateList)
 		{
 			try {
+				
 				
 				senderClient.publish(currData.getTarget(), "0:" + "give:" + currData.getSerial() + ":" + currData.getMessage());
 
