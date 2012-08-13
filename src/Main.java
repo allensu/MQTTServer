@@ -25,6 +25,8 @@ public class Main {
 	
 		Start(brokerHostIp, brokerPort);
 		//Send(brokerHostIp, brokerPort);
+		
+		
 	}
 	
 	public static void Start(String broker_ip_addr, int broker_port) throws UnknownHostException, IOException, InterruptedException{
@@ -39,7 +41,7 @@ public class Main {
 		try {db.start(url, messageDB);} catch (Exception e) {  e.printStackTrace();	}
 		
 		senderClient = new SocketClient("FUNCUBE_MQTT_SENDER");
-		senderClient.connect(broker_ip_addr, 1883);
+		senderClient.connect(broker_ip_addr, broker_port);
 		System.out.println("::.. MQTT Sender ..::");
 		System.out.println("===Waiting for Connection===");
 		
@@ -49,7 +51,9 @@ public class Main {
 		while(true){
 			System.out.println("I am awake!");
 			
-			client.publish("$hello/awake","I am awake!");
+			client.publish("$hello/awake","FUNCUBE_MQTT_SERVER awake!");
+			senderClient.publish("$hello/awake","FUNCUBE_MQTT_SENDER awake!");
+			
 			try{Thread.sleep(awakeTime);}catch(Exception e){}
 		}
 	}
@@ -60,10 +64,10 @@ public class Main {
 		mongodb db= new mongodb();
 		try {db.start(url, messageDB);} catch (Exception e) {  e.printStackTrace();	}
 		
-		// Get 訊息
+		// Get 閮
  		List<MessageData> messageDateList = db.findAll(); 
 
-		// 發送訊息
+		// �潮�閮
 		for(MessageData currData : messageDateList)
 		{
 			try {

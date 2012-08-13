@@ -1,5 +1,6 @@
 
 public class MessageData {
+	//private String id;
 	private int serial;
 	private String target;
 	private String message;
@@ -27,5 +28,11 @@ public class MessageData {
 	public void setSerial(int serial) {
 		this.serial = serial;
 	}
+//	public String getId() {
+//		return id;
+//	}
+//	public void setId(String id) {
+//		this.id = id;
+//	}
 	
 }

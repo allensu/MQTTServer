@@ -18,7 +18,7 @@ public class mongodb {
 	static DB db;
 
 	/**
-	 * 初使化 Mongo DB
+	 * �蝙��Mongo DB
 	 * @param url
 	 * @param messageDB
 	 * @throws Exception
@@ -35,7 +35,7 @@ public class mongodb {
 	}
 
 	/**
-	 * 取得所有未發送的資訊
+	 * ������芰��鞈�
 	 * 
 	 * @return
 	 */
@@ -52,12 +52,13 @@ public class mongodb {
 
 			while (cur.hasNext()) {
 				DBObject dbObj = cur.next();
-				MessageData messageDate = new MessageData();
-				messageDate.setSerial(Integer.parseInt((String)dbObj.get("serial")));
-				messageDate.setTarget((String) dbObj.get("target"));
-				messageDate.setMessage((String) dbObj.get("message"));
+				MessageData messageData = new MessageData();
+				//messageData.setId(String.valueOf(dbObj.get("serial")));
+				messageData.setSerial(Integer.parseInt( dbObj.get("serial").toString()));
+				messageData.setTarget((String) dbObj.get("target"));
+				messageData.setMessage((String) dbObj.get("message"));
 
-				result.add(messageDate);
+				result.add(messageData);
 			}
 
 		} catch (Exception ex) {
@@ -68,7 +69,7 @@ public class mongodb {
 	}
 
 	/**
-	 * 取得新的流水號
+	 * ���啁�瘚偌��
 	 * 
 	 * @return
 	 */
@@ -93,7 +94,7 @@ public class mongodb {
 	}
 
 	/**
-	 * 新增發送的訊息
+	 * �啣��潮�����
 	 * 
 	 * @param target
 	 * @param message
@@ -103,8 +104,11 @@ public class mongodb {
 
 		DBCollection coll = db.getCollection("messageData");
 		BasicDBObject doc = new BasicDBObject();
-
-		doc.put("serial", getNewSerial());
+		
+		int newSerial = getNewSerial();
+		
+		//doc.put("id", String.valueOf(newSerial));
+		doc.put("serial", newSerial);
 		doc.put("target", target);
 		doc.put("message", message);
 		coll.insert(doc);
@@ -112,20 +116,20 @@ public class mongodb {
 	}
 
 	/**
-	 * 刪除Client收到的訊息
+	 * �芷Client�嗅����
 	 * 
 	 * @param serial
 	 */
-	public void delRecv(String serial) {
+	public void delRecv(int serial) {
 
 		DBCollection coll = db.getCollection("messageData");
 
 		BasicDBObject query = new BasicDBObject();
-
+		
 		query.put("serial", serial);
 
 		coll.remove(query);
-
+		
 		System.out.println("Deleting message with index [" + serial + "] ");
 	}
 }

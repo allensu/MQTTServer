@@ -93,7 +93,7 @@ public class SocketClient {
 		
 		if(command[1].equals("del")){
 			System.out.println("User has recieved message id: "+command[2]+" , so the message has been deleted.");
-			db.delRecv(command[2]);
+			db.delRecv(Integer.valueOf(command[2]));
 		}
 		
 //		else if(command[1].equals("online")){
