@@ -1,10 +1,6 @@
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import org.bson.BSONObject;
-
 import com.mongodb.Mongo;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
