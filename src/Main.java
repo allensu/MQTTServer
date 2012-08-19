@@ -24,6 +24,26 @@ public class Main {
 	static MessageMongoDB messageMDB = new MessageMongoDB();
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
+		
+		if(args == null || args.length != 6)
+		{
+			System.out.println("Sample : java -jar MQTTServer.jar localhost 1883 localhost 27017 gopartyon_message 20000");
+			return;
+		} else {
+			brokerHostIp = args[0];
+			brokerPort = Integer.parseInt(args[1]);
+			url = args[2] + ":" + args[3];
+			messageDB = args[4];
+			awakeTime = Integer.parseInt(args[5]);
+			
+			System.out.println("[Parameter]");
+			System.out.println("Broker Host Ip : " + brokerHostIp);
+			System.out.println("Broker Port : " + brokerPort);
+			System.out.println("MongoDB Url : " + url);
+			System.out.println("MessageDB Name : " + messageDB);
+			System.out.println("Awake Time : " + awakeTime);
+		}
+		
 		System.out.println("Start MQTTServer Version 0.1");
 		messageMDB.start(url, messageDB);
 		
