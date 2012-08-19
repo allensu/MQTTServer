@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.Semaphore;
 
+import tw.com.gopartyon.mqtt.MessageMongoDB;
+
 import MQTTLib.ConnAckMessage;
 import MQTTLib.ConnectMessage;
 import MQTTLib.DisconnectMessage;
@@ -24,12 +26,13 @@ public class SocketClient {
 	private MqttReader reader;
 	private Semaphore connectionAckLock;
 	private final String id;
-
+	private MessageMongoDB messageMDB = null;
+	
 	public SocketClient(String id) {
 		this.id = id;
 	}
 
-	public void connect(String host, int port)
+	public void connect(String host, int port, MessageMongoDB messageMDB)
 			throws UnknownHostException, IOException, InterruptedException {
 		socket = new Socket(host, port);
 		InputStream is = socket.getInputStream();
@@ -42,6 +45,8 @@ public class SocketClient {
 		connectionAckLock = new Semaphore(0);
 		out.writeMessage(msg);
 		connectionAckLock.acquire();
+		
+		this.messageMDB = messageMDB;
 	}
 
 	public void publish(String topic, String message) throws IOException {
@@ -84,7 +89,6 @@ public class SocketClient {
 				
 		String str=msg.getDataAsString();
 		
-		mongodb db = new mongodb(); 
 		
 		String[] command=str.split(":");
 		
@@ -93,7 +97,8 @@ public class SocketClient {
 		
 		if(command[1].equals("del")){
 			System.out.println("User has recieved message id: "+command[2]+" , so the message has been deleted.");
-			db.delRecv(Integer.valueOf(command[2]));
+			//db.delRecv(Integer.valueOf(command[2]));
+			messageMDB.delete(Integer.valueOf(command[2]));
 		}
 		
 //		else if(command[1].equals("online")){
