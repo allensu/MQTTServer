@@ -25,16 +25,16 @@ public class Main {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
 		
-		if(args == null || args.length != 6)
+		if(args == null || args.length != 5)
 		{
-			System.out.println("Sample : java -jar MQTTServer.jar localhost 1883 localhost 27017 gopartyon_message 20000");
+			System.out.println("Sample : java -jar MQTTServer.jar localhost 1883 tpe01.gofuncube.com.tw:30000,dev.gopartyon.com:30001,dev2.gopartyon.com:30002 gopartyon_message 20000");
 			return;
 		} else {
 			brokerHostIp = args[0];
 			brokerPort = Integer.parseInt(args[1]);
-			url = args[2] + ":" + args[3];
-			messageDB = args[4];
-			awakeTime = Integer.parseInt(args[5]);
+			url = args[2];
+			messageDB = args[3];
+			awakeTime = Integer.parseInt(args[4]);
 			
 			System.out.println("[Parameter]");
 			System.out.println("Broker Host Ip : " + brokerHostIp);
